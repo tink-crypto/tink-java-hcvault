@@ -1,0 +1,32 @@
+licenses(["notice"])
+
+java_test(
+    name = "HcVaultAeadTest",
+    size = "small",
+    srcs = ["HcVaultAeadTest.java"],
+    deps = [
+        "@tink_java//src/main/java/com/google/crypto/tink:aead",
+        "@tink_java//src/main/java/com/google/crypto/tink/aead:aead_config",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:fake_hcvault",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:hcvault_aead",
+        "@tink_java//src/main/java/com/google/crypto/tink/subtle:random",
+        "@maven//:com_google_truth_truth",
+        "@maven//:io_github_jopenlibs_vault_java_driver",
+        "@maven//:junit_junit",
+    ],
+)
+
+java_test(
+    name = "FakeHcVaultTest",
+    size = "small",
+    srcs = ["FakeHcVaultTest.java"],
+    deps = [
+        "@tink_java//src/main/java/com/google/crypto/tink/aead:aead_config",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:fake_hcvault",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:hcvault_aead",
+        "@tink_java//src/main/java/com/google/crypto/tink/subtle:random",
+        "@maven//:com_google_truth_truth",
+        "@maven//:io_github_jopenlibs_vault_java_driver",
+        "@maven//:junit_junit",
+    ],
+)

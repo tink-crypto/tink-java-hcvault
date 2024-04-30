@@ -1,0 +1,26 @@
+licenses(["notice"])
+
+package(default_visibility = ["//visibility:public"])
+
+java_library(
+    name = "hcvault_aead",
+    srcs = ["HcVaultAead.java"],
+    deps = [
+        "@tink_java//src/main/java/com/google/crypto/tink:aead",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_github_jopenlibs_vault_java_driver",
+    ],
+)
+
+java_library(
+    name = "fake_hcvault",
+    testonly = 1,
+    srcs = ["FakeHcVault.java"],
+    deps = [
+        "@tink_java//src/main/java/com/google/crypto/tink:aead",
+        "@tink_java//src/main/java/com/google/crypto/tink:key_templates",
+        "@tink_java//src/main/java/com/google/crypto/tink:registry_cluster",
+        "@tink_java//src/main/java/com/google/crypto/tink/subtle:random",
+        "@maven//:io_github_jopenlibs_vault_java_driver",
+    ],
+)
