@@ -14,7 +14,7 @@
 
 """ Definition of java_single_jar. """
 
-load("//third_party/bazel_rules/rules_java/java:defs.bzl", "JavaInfo")
+load("@rules_java//java:defs.bzl", "JavaInfo")
 
 def _check_non_empty(value, name):
     if not value:
