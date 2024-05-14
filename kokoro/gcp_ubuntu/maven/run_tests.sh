@@ -69,3 +69,24 @@ cleanup() {
 }
 
 ./kokoro/testutils/run_command.sh "${RUN_COMMAND_ARGS[@]}" ./_do_run_test.sh
+
+readonly GITHUB_JOB_NAME="tink/github/java_hcvault/gcp_ubuntu/maven/continuous"
+
+if [[ "${IS_KOKORO}" == "true" \
+      && "${KOKORO_JOB_NAME}" == "${GITHUB_JOB_NAME}" ]]; then
+  # GITHUB_ACCESS_TOKEN is populated by Kokoro.
+  readonly GIT_CREDENTIALS="ise-crypto:${GITHUB_ACCESS_TOKEN}"
+  readonly GITHUB_URL="https://${GIT_CREDENTIALS}@github.com/tink-crypto/tink-java-hcvault.git"
+
+  # Share the required env variables with the container to allow publishing the
+  # snapshot on Sonatype.
+  cat <<EOF > env_variables.txt
+SONATYPE_USERNAME
+SONATYPE_PASSWORD
+EOF
+  RUN_COMMAND_ARGS+=( -e env_variables.txt )
+
+  ./kokoro/testutils/run_command.sh "${RUN_COMMAND_ARGS[@]}" \
+    ./maven/maven_deploy_library.sh -u "${GITHUB_URL}" snapshot tink-hcvault \
+    maven/tink-java-hcvault.pom.xml HEAD
+fi
