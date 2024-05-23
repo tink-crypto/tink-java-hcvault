@@ -17,6 +17,29 @@ java_test(
 )
 
 java_test(
+    name = "HcVaultClientTest",
+    size = "small",
+    srcs = ["HcVaultClientTest.java"],
+    deps = [
+        "@tink_java//src/main/java/com/google/crypto/tink:aead",
+        "@tink_java//src/main/java/com/google/crypto/tink:key_template",
+        "@tink_java//src/main/java/com/google/crypto/tink:key_templates",
+        "@tink_java//src/main/java/com/google/crypto/tink:kms_client",
+        "@tink_java//src/main/java/com/google/crypto/tink:kms_clients",
+        "@tink_java//src/main/java/com/google/crypto/tink:kms_clients_test_util",
+        "@tink_java//src/main/java/com/google/crypto/tink:registry_cluster",
+        "@tink_java//src/main/java/com/google/crypto/tink/aead:aead_config",
+        "@tink_java//src/main/java/com/google/crypto/tink/aead:kms_aead_key_manager",
+        "@tink_java//src/main/java/com/google/crypto/tink/aead:kms_envelope_aead_key_manager",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:fake_hcvault",
+        "//src/main/java/com/google/crypto/tink/integration/hcvault:hcvault_client",
+        "@tink_java//src/main/java/com/google/crypto/tink/subtle:random",
+        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
+    ],
+)
+
+java_test(
     name = "FakeHcVaultTest",
     size = "small",
     srcs = ["FakeHcVaultTest.java"],
