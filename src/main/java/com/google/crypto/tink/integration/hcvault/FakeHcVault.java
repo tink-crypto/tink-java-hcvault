@@ -72,11 +72,12 @@ final class FakeHcVault extends Logical {
         throw new VaultException("Key not found: " + keyName);
       }
       Aead aead = aeads.get(keyName);
-      byte[] context = Base64.getDecoder().decode((String) nameValuePairs.get("context"));
+      byte[] associatedData =
+          Base64.getDecoder().decode((String) nameValuePairs.get("associated_data"));
       byte[] plaintext = Base64.getDecoder().decode((String) nameValuePairs.get("plaintext"));
       byte[] ciphertext;
       try {
-        ciphertext = aead.encrypt(plaintext, context);
+        ciphertext = aead.encrypt(plaintext, associatedData);
       } catch (GeneralSecurityException e) {
         throw new VaultException(e.getMessage());
       }
@@ -91,12 +92,13 @@ final class FakeHcVault extends Logical {
         throw new VaultException("Key not found: " + keyName);
       }
       Aead aead = aeads.get(keyName);
-      byte[] context = Base64.getDecoder().decode((String) nameValuePairs.get("context"));
+      byte[] associatedData =
+          Base64.getDecoder().decode((String) nameValuePairs.get("associated_data"));
       String ciphertext = (String) nameValuePairs.get("ciphertext");
       byte[] ciphertextBytes = Base64.getDecoder().decode(ciphertext);
       byte[] plaintext;
       try {
-        plaintext = aead.decrypt(ciphertextBytes, context);
+        plaintext = aead.decrypt(ciphertextBytes, associatedData);
       } catch (GeneralSecurityException e) {
         throw new VaultException(e.getMessage());
       }

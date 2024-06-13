@@ -51,14 +51,14 @@ public final class FakeHcVaultTest {
     String encPath = "transit/encrypt/key-1";
     Map<String, Object> encReq = new HashMap<>();
     encReq.put("plaintext", Base64.getEncoder().encodeToString(plaintext));
-    encReq.put("context", Base64.getEncoder().encodeToString(associatedData));
+    encReq.put("associated_data", Base64.getEncoder().encodeToString(associatedData));
     LogicalResponse encResp = kms.write(encPath, encReq);
 
     String ciphertext = (String) encResp.getData().get("ciphertext");
 
     String decPath = "transit/decrypt/key-1";
     Map<String, Object> decReq = new HashMap<>();
-    decReq.put("context", Base64.getEncoder().encodeToString(associatedData));
+    decReq.put("associated_data", Base64.getEncoder().encodeToString(associatedData));
     decReq.put("ciphertext", ciphertext);
     LogicalResponse decResp = kms.write(decPath, decReq);
 
@@ -77,7 +77,7 @@ public final class FakeHcVaultTest {
 
     // valid decPath with an invalid decrypt request fails.
     Map<String, Object> invalidDecReq = new HashMap<>();
-    invalidDecReq.put("context", Base64.getEncoder().encodeToString(associatedData));
+    invalidDecReq.put("associated_data", Base64.getEncoder().encodeToString(associatedData));
     invalidDecReq.put("ciphertext", "invalid");
     assertThrows(VaultException.class, () -> kms.write(decPath, invalidDecReq));
 

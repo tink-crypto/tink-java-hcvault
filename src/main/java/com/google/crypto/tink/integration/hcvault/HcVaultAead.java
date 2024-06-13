@@ -52,7 +52,7 @@ public final class HcVaultAead implements Aead {
     try {
       Map<String, Object> content = new HashMap<>();
       content.put("plaintext", Base64.getEncoder().encodeToString(plaintext));
-      content.put("context", Base64.getEncoder().encodeToString(associatedData));
+      content.put("associated_data", Base64.getEncoder().encodeToString(associatedData));
       LogicalResponse resp = vaultApi.write(encPath, content);
       handleResponse(resp);
       return resp.getData().get("ciphertext").getBytes();
@@ -67,7 +67,7 @@ public final class HcVaultAead implements Aead {
     try {
       Map<String, Object> content = new HashMap<>();
       content.put("ciphertext", new String(ciphertext));
-      content.put("context", Base64.getEncoder().encodeToString(associatedData));
+      content.put("associated_data", Base64.getEncoder().encodeToString(associatedData));
       LogicalResponse resp = vaultApi.write(decPath, content);
       handleResponse(resp);
       return Base64.getDecoder().decode(resp.getData().get("plaintext").getBytes());
