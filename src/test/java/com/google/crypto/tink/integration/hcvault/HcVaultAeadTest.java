@@ -63,7 +63,7 @@ public class HcVaultAeadTest {
   }
 
   @Test
-  public void testDecryptWithDifferentKey_worksButShouldFails() throws Exception {
+  public void testDecryptWithDifferentKey_fails() throws Exception {
     Logical kms =
         new FakeHcVault(/* mountPath= */ "transit", /* validKeyNames= */ asList("key-1", "key-2"));
 
