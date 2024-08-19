@@ -21,7 +21,7 @@ TINK_JAVA_HCVAULT_MAVEN_ARTIFACTS = [
 def tink_java_hcvault_deps():
     """Bazel dependencies for tink-java-hcvault."""
     if not native.existing_rule("tink_java"):
-        # Apr 2nd, 2024.
+        # Release from 2024-04-02.
         http_archive(
             name = "tink_java",
             urls = ["https://github.com/tink-crypto/tink-java/releases/download/v1.13.0/tink-java-1.13.0.zip"],
