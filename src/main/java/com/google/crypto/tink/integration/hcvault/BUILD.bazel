@@ -35,6 +35,7 @@ java_library(
         "@tink_java//src/main/java/com/google/crypto/tink:aead",
         "@tink_java//src/main/java/com/google/crypto/tink:key_templates",
         "@tink_java//src/main/java/com/google/crypto/tink:registry_cluster",
+        "@tink_java//src/main/java/com/google/crypto/tink:registry_configuration",
         "@tink_java//src/main/java/com/google/crypto/tink/subtle:random",
         "@maven//:io_github_jopenlibs_vault_java_driver",
     ],

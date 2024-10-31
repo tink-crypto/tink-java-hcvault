@@ -18,6 +18,7 @@ package com.google.crypto.tink.integration.hcvault;
 import com.google.crypto.tink.Aead;
 import com.google.crypto.tink.KeyTemplates;
 import com.google.crypto.tink.KeysetHandle;
+import com.google.crypto.tink.RegistryConfiguration;
 import io.github.jopenlibs.vault.VaultConfig;
 import io.github.jopenlibs.vault.VaultException;
 import io.github.jopenlibs.vault.api.Logical;
@@ -55,7 +56,7 @@ final class FakeHcVault extends Logical {
     try {
       for (String keyName : validKeyNames) {
         Aead aead =
-            KeysetHandle.generateNew(KeyTemplates.get("AES128_GCM")).getPrimitive(Aead.class);
+            KeysetHandle.generateNew(KeyTemplates.get("AES128_GCM")).getPrimitive(RegistryConfiguration.get(), Aead.class);
         aeads.put(keyName, aead);
       }
     } catch (GeneralSecurityException e) {

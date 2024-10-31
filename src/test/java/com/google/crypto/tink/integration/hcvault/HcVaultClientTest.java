@@ -27,6 +27,7 @@ import com.google.crypto.tink.KeyTemplates;
 import com.google.crypto.tink.KeysetHandle;
 import com.google.crypto.tink.KmsClients;
 import com.google.crypto.tink.KmsClientsTestUtil;
+import com.google.crypto.tink.RegistryConfiguration;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.KmsAeadKeyManager;
 import com.google.crypto.tink.aead.KmsEnvelopeAeadKeyManager;
@@ -63,7 +64,7 @@ public final class HcVaultClientTest {
     // Create a KmsAead primitive
     KeyTemplate kmsTemplate = KmsAeadKeyManager.createKeyTemplate(KEY_URI);
     KeysetHandle handle = KeysetHandle.generateNew(kmsTemplate);
-    Aead kmsAead = handle.getPrimitive(Aead.class);
+    Aead kmsAead = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
 
     byte[] plaintext = "plaintext".getBytes(UTF_8);
     byte[] associatedData = "associatedData".getBytes(UTF_8);
@@ -84,7 +85,7 @@ public final class HcVaultClientTest {
     KeyTemplate envelopeTemplate =
         KmsEnvelopeAeadKeyManager.createKeyTemplate(KEY_URI, dekTemplate);
     KeysetHandle handle = KeysetHandle.generateNew(envelopeTemplate);
-    Aead kmsEnvelopeAead = handle.getPrimitive(Aead.class);
+    Aead kmsEnvelopeAead = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
 
     byte[] plaintext = "plaintext".getBytes(UTF_8);
     byte[] associatedData = "associatedData".getBytes(UTF_8);
@@ -103,12 +104,14 @@ public final class HcVaultClientTest {
     // getPrimitive works for keyUri
     KeyTemplate kmsTemplate = KmsAeadKeyManager.createKeyTemplate(KEY_URI);
     KeysetHandle handle = KeysetHandle.generateNew(kmsTemplate);
-    Aead unused = handle.getPrimitive(Aead.class);
+    Aead unused = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
 
     // getPrimitive does not work for keyUri2
     KeyTemplate kmsTemplate2 = KmsAeadKeyManager.createKeyTemplate(KEY_URI_2);
     KeysetHandle handle2 = KeysetHandle.generateNew(kmsTemplate2);
-    assertThrows(GeneralSecurityException.class, () -> handle2.getPrimitive(Aead.class));
+    assertThrows(
+        GeneralSecurityException.class,
+        () -> handle2.getPrimitive(RegistryConfiguration.get(), Aead.class));
   }
 
   @Test
@@ -123,13 +126,15 @@ public final class HcVaultClientTest {
     KeyTemplate envelopeTemplate =
         KmsEnvelopeAeadKeyManager.createKeyTemplate(KEY_URI, dekTemplate);
     KeysetHandle handle = KeysetHandle.generateNew(envelopeTemplate);
-    Aead unused = handle.getPrimitive(Aead.class);
+    Aead unused = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
 
     // getPrimitive does not work for KEY_URI_2
     KeyTemplate envelopeTemplate2 =
         KmsEnvelopeAeadKeyManager.createKeyTemplate(KEY_URI_2, dekTemplate);
     KeysetHandle handle2 = KeysetHandle.generateNew(envelopeTemplate2);
-    assertThrows(GeneralSecurityException.class, () -> handle2.getPrimitive(Aead.class));
+    assertThrows(
+        GeneralSecurityException.class,
+        () -> handle2.getPrimitive(RegistryConfiguration.get(), Aead.class));
   }
 
   @Test
@@ -144,14 +149,14 @@ public final class HcVaultClientTest {
 
     KeyTemplate kmsTemplate = KmsAeadKeyManager.createKeyTemplate(KEY_URI);
     KeysetHandle handle = KeysetHandle.generateNew(kmsTemplate);
-    Aead kmsAead = handle.getPrimitive(Aead.class);
+    Aead kmsAead = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
     byte[] ciphertext = kmsAead.encrypt(plaintext, associatedData);
     byte[] decrypted = kmsAead.decrypt(ciphertext, associatedData);
     assertThat(decrypted).isEqualTo(plaintext);
 
     KeyTemplate kmsTemplate2 = KmsAeadKeyManager.createKeyTemplate(KEY_URI_2);
     KeysetHandle handle2 = KeysetHandle.generateNew(kmsTemplate2);
-    Aead kmsAead2 = handle2.getPrimitive(Aead.class);
+    Aead kmsAead2 = handle2.getPrimitive(RegistryConfiguration.get(), Aead.class);
     byte[] ciphertext2 = kmsAead2.encrypt(plaintext, associatedData);
     byte[] decrypted2 = kmsAead2.decrypt(ciphertext2, associatedData);
     assertThat(decrypted2).isEqualTo(plaintext);
@@ -165,7 +170,7 @@ public final class HcVaultClientTest {
 
     KeyTemplate kmsTemplate = KmsAeadKeyManager.createKeyTemplate(KEY_URI);
     KeysetHandle handle = KeysetHandle.generateNew(kmsTemplate);
-    Aead aead = handle.getPrimitive(Aead.class);
+    Aead aead = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
 
     byte[] plaintext = "plaintext".getBytes(UTF_8);
     byte[] associatedData = "associatedData".getBytes(UTF_8);
@@ -182,14 +187,14 @@ public final class HcVaultClientTest {
 
     KeyTemplate kmsTemplate = KmsAeadKeyManager.createKeyTemplate(KEY_URI);
     KeysetHandle handle = KeysetHandle.generateNew(kmsTemplate);
-    Aead kmsAead = handle.getPrimitive(Aead.class);
+    Aead kmsAead = handle.getPrimitive(RegistryConfiguration.get(), Aead.class);
     byte[] plaintext = "plaintext".getBytes(UTF_8);
     byte[] associatedData = "associatedData".getBytes(UTF_8);
     byte[] ciphertext = kmsAead.encrypt(plaintext, associatedData);
 
     KeyTemplate kmsTemplate2 = KmsAeadKeyManager.createKeyTemplate(KEY_URI_2);
     KeysetHandle handle2 = KeysetHandle.generateNew(kmsTemplate2);
-    Aead kmsAead2 = handle2.getPrimitive(Aead.class);
+    Aead kmsAead2 = handle2.getPrimitive(RegistryConfiguration.get(), Aead.class);
     assertThrows(
         GeneralSecurityException.class, () -> kmsAead2.decrypt(ciphertext, associatedData));
   }
