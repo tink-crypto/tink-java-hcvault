@@ -68,7 +68,7 @@ cleanup() {
   rm -rf _do_run_test.sh
 }
 
-./kokoro/testutils/run_command.sh "${RUN_COMMAND_ARGS[@]}" ./_do_run_test.sh
+./kokoro/testutils/docker_execute.sh "${RUN_COMMAND_ARGS[@]}" ./_do_run_test.sh
 
 readonly GITHUB_JOB_NAME="tink/github/java_hcvault/gcp_ubuntu/maven/continuous"
 
@@ -86,7 +86,7 @@ SONATYPE_PASSWORD
 EOF
   RUN_COMMAND_ARGS+=( -e env_variables.txt )
 
-  ./kokoro/testutils/run_command.sh "${RUN_COMMAND_ARGS[@]}" \
+  ./kokoro/testutils/docker_execute.sh "${RUN_COMMAND_ARGS[@]}" \
     ./maven/maven_deploy_library.sh -u "${GITHUB_URL}" snapshot tink-hcvault \
     maven/tink-java-hcvault.pom.xml HEAD
 fi
