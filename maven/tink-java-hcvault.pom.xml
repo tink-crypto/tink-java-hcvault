@@ -82,7 +82,7 @@
     <java.version>11</java.version>
     <tink.version>1.14.1</tink.version>
     <vault-java-driver.version>5.4.0</vault-java-driver.version>
-    <guava.version>33.1.0-jre</guava.version>
+    <guava.version>33.3.1-jre</guava.version>
   </properties>
 
   <dependencies>
