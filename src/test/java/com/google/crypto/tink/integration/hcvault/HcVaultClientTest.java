@@ -23,11 +23,11 @@ import static org.junit.Assert.assertThrows;
 
 import com.google.crypto.tink.Aead;
 import com.google.crypto.tink.KeyTemplate;
-import com.google.crypto.tink.KeyTemplates;
 import com.google.crypto.tink.KeysetHandle;
 import com.google.crypto.tink.KmsClients;
 import com.google.crypto.tink.KmsClientsTestUtil;
 import com.google.crypto.tink.aead.AeadConfig;
+import com.google.crypto.tink.aead.AesCtrHmacAeadParameters;
 import com.google.crypto.tink.aead.KmsAeadConfig2026;
 import com.google.crypto.tink.aead.KmsAeadKeyManager;
 import com.google.crypto.tink.aead.KmsEnvelopeAeadKeyManager;
@@ -83,7 +83,16 @@ public final class HcVaultClientTest {
     KmsClients.add(HcVaultClient.create(fakeHcVault, KEY_URI));
 
     // Create an envelope encryption AEAD primitive
-    KeyTemplate dekTemplate = KeyTemplates.get("AES128_CTR_HMAC_SHA256_RAW");
+    KeyTemplate dekTemplate =
+        KeyTemplate.createFrom(
+            AesCtrHmacAeadParameters.builder()
+                .setAesKeySizeBytes(16)
+                .setHmacKeySizeBytes(32)
+                .setTagSizeBytes(16)
+                .setIvSizeBytes(16)
+                .setHashType(AesCtrHmacAeadParameters.HashType.SHA256)
+                .setVariant(AesCtrHmacAeadParameters.Variant.NO_PREFIX)
+                .build());
     KeyTemplate envelopeTemplate =
         KmsEnvelopeAeadKeyManager.createKeyTemplate(KEY_URI, dekTemplate);
     KeysetHandle handle =
@@ -130,7 +139,16 @@ public final class HcVaultClientTest {
         new FakeHcVault(/* mountPath= */ "transit", /* validKeyNames= */ asList("key-1"));
     KmsClients.add(HcVaultClient.create(fakeHcVault, KEY_URI));
 
-    KeyTemplate dekTemplate = KeyTemplates.get("AES128_CTR_HMAC_SHA256_RAW");
+    KeyTemplate dekTemplate =
+        KeyTemplate.createFrom(
+            AesCtrHmacAeadParameters.builder()
+                .setAesKeySizeBytes(16)
+                .setHmacKeySizeBytes(32)
+                .setTagSizeBytes(16)
+                .setIvSizeBytes(16)
+                .setHashType(AesCtrHmacAeadParameters.HashType.SHA256)
+                .setVariant(AesCtrHmacAeadParameters.Variant.NO_PREFIX)
+                .build());
     // getPrimitive works for KEY_URI
     KeyTemplate envelopeTemplate =
         KmsEnvelopeAeadKeyManager.createKeyTemplate(KEY_URI, dekTemplate);
